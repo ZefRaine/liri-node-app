@@ -15,10 +15,10 @@ const ConcertThis = function () {
         // fullfils a promise to grab our url and grab the JSON response
         axios.get(queryUrl).then(function (response) {
             // displays a message if the band is currently not touring
-            if (response.length === undefined) {
+            if (response.data.length === undefined) {
                 console.log("Sorry, try another band");
                 return
-            }
+            };
             // creating several const to hold our response data
             const venue = response.data[0].venue.name;
             //formatting the time of the event using moment.js
