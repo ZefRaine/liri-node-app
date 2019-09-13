@@ -1,9 +1,10 @@
 require("dotenv").config();
-const keys = require("./keys.js");
-//var spotify = new Spotify(keys.spotify);
 const axios = require("axios");
 const moment = require("moment");
-// creating a table of contents
+const keys = require("./keys.js");
+var Spotify = require('node-spotify-api');
+var spotify = new Spotify(keys.spotify);
+
 // creating const ConcertThis
 const ConcertThis = function () {
     //using our process.argv to search our Bandsintown API
@@ -34,7 +35,27 @@ const ConcertThis = function () {
     }
 };
 
-// if the user types concert-this they will use the ConcertThis function
+const SpotifyThis = function (term) {
+    spotify.search({
+        type: 'track',
+        query: term
+    }, function (err, data) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+        const song = data.tracks.items[0].name;
+        const band = data.tracks.items[0].album.artists[0].name;
+        const link = data.tracks.items[0].external_urls.spotify;
+        const album = data.tracks.items[0].album.name;
+        console.log("------------",
+            "\nSong: " + song,
+            "\n\nBand/Artist: " + band,
+            "\n\nAlbum: " + album,
+            "\n\nLink: " + link,
+            "\n------------")
+    })
+};
+
 // creating const MovieThis
 const MovieThis = function () {
     //using our process.argv to search our OMDB API
@@ -43,6 +64,10 @@ const MovieThis = function () {
         const queryUrl = "http://www.omdbapi.com/?apikey=trilogy&t=" + title
         // fullfils a promise to grab our url and grab the JSON response
         axios.get(queryUrl).then(function (response) {
+            if (response.data.length === undefined) {
+                console.log("Sorry, try another title")
+                return
+            };
             // creating several const to hold our response data
             const Title = response.data.Title;
             const Released = response.data.Released;
@@ -68,28 +93,44 @@ const MovieThis = function () {
     }
 };
 const showSearch = new ConcertThis();
+//const songSearch = new SpotifyThis();
 const filmSearch = new MovieThis();
-const search = process.argv[2];
-let term = process.argv[3];
+const searching = process.argv[2];
+let term = process.argv.slice(3).join(" ");
 
-function userSearch() {
-    if (!search) {
-        return console.log("Try 'Help'")
+function userSearch(searching, term) {
+    if (!searching) {
+        return console.log("\n------------",
+            "\nTry one of these:",
+            "\n\nconcert-this 'Band/Artist'", 
+            "\nProvides info on the artist's next concert",
+            "\n\nspotify-this-song 'Song Title'",
+            "\nProvides info on  the song choosen",
+            "\n\nmovie-this 'Movie Title'",
+            "\nProvides info on the movie choosen",
+            "\n\ndo-what-it-says",
+            "\nTry it and find out",
+            "\n------------")
     }
     // if the user types concert-this they will use the ConcertThis function
-    else if (search === "movie-this") {
+    else if (searching === "movie-this") {
         if (!term) {
             term = "Mr. Nobody"
         }
         filmSearch.movieSearch(term);
 
-} else if (search === "concert-this") {
-    if (!term) {
-        console.log("Please provide Band/Artist name")
-        return
+    } else if (searching === "concert-this") {
+        if (!term) {
+            console.log("Please provide Band/Artist name")
+            return
+        }
+        showSearch.artistSearch(term);
+    } else if (searching === "spotify-this-song") {
+        if (!term) {
+            term = "Dare to Be Stupid"
+        }
+       SpotifyThis(term);
     }
-    showSearch.artistSearch(term);
 }
-}
-userSearch();
+userSearch(searching, term);
 // `do-what-it-says

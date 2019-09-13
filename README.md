@@ -45,7 +45,12 @@ The APIs utilized in this application are from Bands in Town, Spotify, and OMDB.
      * In addition to logging the data to your terminal/bash window, outputs the data to a .txt file called `log.txt`.
 
 ### Instructions
-3. Give start-to-finish instructions on how to run the app
+1. `Meet LIRI`
+     * _Language_ Interpretation and Recognition Interface
+
+     * type Node Liri to see different search fields and information on what they do
+
+     * after Node Liri add `concert-this`, `spotify-this-song`, `movie-this`, or `do-what-it-says` plus your search term to search for information
 
 ### Screenshots & Gifs
 
