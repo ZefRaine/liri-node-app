@@ -1,6 +1,6 @@
 # liri-node-app
 ## Developed by Zeph Tambornino
-LIRI will search Spotify for songs, Bands in Town for concerts, and OMDB for movies. This app is designed to pull the most important bits of information from several APIs and log it into the console using Node.JS. This is for self-educational purposes and also serving a practical function.
+LIRI will search Spotify for songs, Bands in Town for concerts, and OMDB for movies. This app is designed to pull the most important bits of information from several APIs and log it into the console using Node.JS. This is for self-educational purposes and also serving a practical function. https://zefraine.github.io/liri-node-app/.
 
 ### The Overview
 The APIs utilized in this application are from Bands in Town, Spotify, and OMDB. Their usage is to give the following information for each search:
@@ -50,7 +50,7 @@ The APIs utilized in this application are from Bands in Town, Spotify, and OMDB.
 
      * type `node liri` in the terminal to see different search fields and information on what they do
 
-     * after Node Liri add `concert-this`, `spotify-this-song`, `movie-this`, or `do-what-it-says` plus your search term to search for information
+     * after `node liri` add `concert-this`, `spotify-this-song`, `movie-this`, or `do-what-it-says` plus your search term to search for information
      
 ### Technologies Used
 *

@@ -118,7 +118,7 @@ function userSearch(searching, term) {
             "\nTry it and find out",
             "\n------------")
     }
-    // if the user types concert-this they will use the ConcertThis function
+    // if the user types movie-this they will use the MovieThis function
     else if (searching === "movie-this") {
         if (!term) {
             term = "Mr. Nobody"
