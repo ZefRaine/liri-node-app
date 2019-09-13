@@ -48,7 +48,7 @@ The APIs utilized in this application are from Bands in Town, Spotify, and OMDB.
 1. `Meet LIRI`
      * _Language_ Interpretation and Recognition Interface
 
-     * type Node Liri to see different search fields and information on what they do
+     * type `node liri` in the terminal to see different search fields and information on what they do
 
      * after Node Liri add `concert-this`, `spotify-this-song`, `movie-this`, or `do-what-it-says` plus your search term to search for information
 

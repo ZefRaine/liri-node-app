@@ -4,6 +4,7 @@ const moment = require("moment");
 const keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
+var fs = require("fs");
 
 // creating const ConcertThis
 const ConcertThis = function () {
@@ -14,8 +15,8 @@ const ConcertThis = function () {
         // fullfils a promise to grab our url and grab the JSON response
         axios.get(queryUrl).then(function (response) {
             // displays a message if the band is currently not touring
-            if (response.data.length < 1) {
-                console.log("Band currently has no scheduled concerts")
+            if (response.length === undefined) {
+                console.log("Sorry, try another band");
                 return
             }
             // creating several const to hold our response data
@@ -41,7 +42,7 @@ const SpotifyThis = function (term) {
         query: term
     }, function (err, data) {
         if (err) {
-            return console.log('Error occurred: ' + err);
+            return console.log('Sorry, try another song');
         }
         const song = data.tracks.items[0].name;
         const band = data.tracks.items[0].album.artists[0].name;
@@ -64,7 +65,7 @@ const MovieThis = function () {
         const queryUrl = "http://www.omdbapi.com/?apikey=trilogy&t=" + title
         // fullfils a promise to grab our url and grab the JSON response
         axios.get(queryUrl).then(function (response) {
-            if (response.data.length === undefined) {
+            if (response.length === undefined) {
                 console.log("Sorry, try another title")
                 return
             };
@@ -92,8 +93,28 @@ const MovieThis = function () {
         })
     }
 };
+
+function doThis(command, instructions) {
+    if (command === "do-what-it-says") {
+        console.log(instructions);
+    } else {
+        console.log(SpotifyThis(instructions));
+    }
+}
+
+fs.readFile("random.txt", "utf8", function (err, data) {
+    if (err) {
+        return console.log(err);
+    }
+    const command = data.split(" ")[0];
+    const instructions = data
+        .split(" ")
+        .slice(1)
+        .join(" ");
+    doThis(command, instructions);
+});
+
 const showSearch = new ConcertThis();
-//const songSearch = new SpotifyThis();
 const filmSearch = new MovieThis();
 const searching = process.argv[2];
 let term = process.argv.slice(3).join(" ");
@@ -102,7 +123,7 @@ function userSearch(searching, term) {
     if (!searching) {
         return console.log("\n------------",
             "\nTry one of these:",
-            "\n\nconcert-this 'Band/Artist'", 
+            "\n\nconcert-this 'Band/Artist'",
             "\nProvides info on the artist's next concert",
             "\n\nspotify-this-song 'Song Title'",
             "\nProvides info on  the song choosen",
@@ -129,7 +150,7 @@ function userSearch(searching, term) {
         if (!term) {
             term = "Dare to Be Stupid"
         }
-       SpotifyThis(term);
+        SpotifyThis(term);
     }
 }
 userSearch(searching, term);
