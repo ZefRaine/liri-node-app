@@ -61,4 +61,4 @@ The APIs utilized in this application are from Bands in Town, Spotify, and OMDB.
      * `Bandsintown`, `Spotify`, & `OMDB` APIs/Packages
 
 ### LIRI in action
-![Liri Demo] (gif/ezgif.gif)
+![Liri Demo](gif/ezgif.gif)
