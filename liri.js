@@ -65,7 +65,7 @@ const MovieThis = function () {
         const queryUrl = "http://www.omdbapi.com/?apikey=trilogy&t=" + title
         // fullfils a promise to grab our url and grab the JSON response
         axios.get(queryUrl).then(function (response) {
-            if (response.length === undefined) {
+            if (response.data.Response === 'False') {
                 console.log("Sorry, try another title")
                 return
             };
@@ -94,25 +94,6 @@ const MovieThis = function () {
     }
 };
 
-function doThis(command, instructions) {
-    if (command === "do-what-it-says") {
-        console.log(instructions);
-    } else {
-        console.log(SpotifyThis(instructions));
-    }
-}
-
-fs.readFile("random.txt", "utf8", function (err, data) {
-    if (err) {
-        return console.log(err);
-    }
-    const command = data.split(" ")[0];
-    const instructions = data
-        .split(" ")
-        .slice(1)
-        .join(" ");
-    doThis(command, instructions);
-});
 
 const showSearch = new ConcertThis();
 const filmSearch = new MovieThis();
@@ -120,6 +101,10 @@ const searching = process.argv[2];
 let term = process.argv.slice(3).join(" ");
 
 function userSearch(searching, term) {
+    let log = searching + ", " + term
+    fs.writeFile("log.txt", log, "utf8", function (err) {
+        if (err) throw err;
+    });
     if (!searching) {
         return console.log("\n------------",
             "\nTry one of these:",
@@ -151,7 +136,25 @@ function userSearch(searching, term) {
             term = "Dare to Be Stupid"
         }
         SpotifyThis(term);
+    } else {
+        function userSearch(command, instructions) {
+            if (command === "do-what-it-says") {
+                console.log(instructions);
+            } else {
+                console.log(SpotifyThis(instructions));
+            }
+        }
+        fs.readFile("random.txt", "utf8", function (err, data) {
+            if (err) {
+                return console.log(err);
+            }
+            const command = data.split(", ")[0];
+            const instructions = data
+                .split(" ")
+                .slice(1)
+                .join(" ");
+            userSearch(command, instructions);
+        });
     }
 }
 userSearch(searching, term);
-// `do-what-it-says
