@@ -136,23 +136,13 @@ function userSearch(searching, term) {
             term = "Dare to Be Stupid"
         }
         SpotifyThis(term);
-    } else {
-        function userSearch(command, instructions) {
-            if (command === "do-what-it-says") {
-                console.log(instructions);
-            } else {
-                console.log(SpotifyThis(instructions));
-            }
-        }
+    } else if (searching === "do-what-it-says") {
         fs.readFile("random.txt", "utf8", function (err, data) {
             if (err) {
                 return console.log(err);
             }
-            const command = data.split(", ")[0];
-            const instructions = data
-                .split(" ")
-                .slice(1)
-                .join(" ");
+            const command = data.split(",")[0];
+            const instructions = data.split(",")[1];
             userSearch(command, instructions);
         });
     }
